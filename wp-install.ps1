@@ -43,13 +43,13 @@ function Get-DebugTimestamp {
 # ====== SCRIPT CONFIGURATION START =============
 #	environment settings
 #	(change the following values to match your local web server)
-$php 					= "D:\laragon\bin\php\php-7.4.29-nts-Win32-VC15-x64\php.exe" 	# path of the PHP executable
-$serverRootFolderPath 	= "D:\laragon\www" 												# the folder in which the script will create the site folder (no trailing slash)
+$php 					= "E:\xampp\php\php.exe" 	# path of the PHP executable
+$serverRootFolderPath 	= "E:\xampp\htdocs" 												# the folder in which the script will create the site folder (no trailing slash)
 $baseUrl 				= "http://localhost" 											# replace localhost with your local IP if you want to view the site from other devices on your network (eg. smartphones)
 
 #	fixed environment settings
 #	(the following values should not be changed)
-$wpCli 					= ".\wp-cli.phar" 												# wp-cli should be in the script folder
+$wpCli 					= "C:\wp-cli\wp-cli.phar" 												# wp-cli should be in the script folder
 $wpFolderName			= $wpFolderName.Replace(".", "_")								# remove dots from folder name, which may cause rewrite rules issues
 $wpFolderPath 			= "$serverRootFolderPath\$wpFolderName"							# full site folder path
 if ( [string]::IsNullOrEmpty( $wpUrl ) ) {
@@ -59,8 +59,8 @@ if ( [string]::IsNullOrEmpty( $wpUrl ) ) {
 #	wordpress settings
 #	(change the following values to customize the Wordpress installation)
 $wpVersion 				= "latest"														# to install a specific version, please look for the number in this page: https://wordpress.org/download/releases/
-$wpLocale 				= "it_IT"														# full list of available languages: https://make.wordpress.org/polyglots/teams/
-$wpAdminUser 			= "site.manager"
+$wpLocale 				= "en_CA"														# full list of available languages: https://make.wordpress.org/polyglots/teams/
+$wpAdminUser 			= "adminSite"
 $wpAdminPass 			= "$(Get-RandomString -length 24)"
 $wpAdminEmail 			= "admin@test.com"
 $wpDbHost 				= "127.0.0.1"
