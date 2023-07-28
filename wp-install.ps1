@@ -60,14 +60,14 @@ if ( [string]::IsNullOrEmpty( $wpUrl ) ) {
 #	(change the following values to customize the Wordpress installation)
 $wpVersion 				= "latest"														# to install a specific version, please look for the number in this page: https://wordpress.org/download/releases/
 $wpLocale 				= "en_CA"														# full list of available languages: https://make.wordpress.org/polyglots/teams/
-$wpAdminUser 			= "adminSite"
+$wpAdminUser 			= "adminAfroticket"
 $wpAdminPass 			= "$(Get-RandomString -length 24)"
-$wpAdminEmail 			= "admin@test.com"
+$wpAdminEmail 			= "admin@afroticket.ca"
 $wpDbHost 				= "127.0.0.1"
 $wpDbUser 				= "root"
 $wpDbPass 				= ""
 $wpDbPrefix				= "$(Get-RandomString -length 3)_"								# a 3 characters long random string
-$wpDbName 				= "$wpFolderName" 												# for the sake of simplicity, the database will have the same name of the site folder
+$wpDbName 				= "${wpFolderName}_db" 											# for the sake of simplicity, the database will have the same name of the site folder
 # ====== SCRIPT CONFIGURATION END ===============
 
 # init commands list
@@ -85,9 +85,10 @@ $commands += "$php $wpCli db create --path=$wpFolderPath"
 # run Wordpress installation
 $commands += "$php $wpCli core install --path=$wpFolderPath --url=""$wpUrl"" --title=""$wpTitle"" --admin_user=$wpAdminUser --admin_password=$wpAdminPass --admin_email=$wpAdminEmail"
 
+
 # ====== OPTIONAL WORDPRESS SETTINGS START ======
 #	permalink format (https://wordpress.org/support/article/using-permalinks/)
-$commands += "$php $wpCli rewrite structure --path=$wpFolderPath /%year%/%monthnum%/%day%/%postname%/ --hard"
+$commands += "$php $wpCli rewrite structure --path=$wpFolderPath /%postname%/ --hard"
 #	prevent search engines to index the site
 $commands += "$php $wpCli option update --path=$wpFolderPath blog_public 0"
 #	disable notifications to blogs
@@ -126,7 +127,7 @@ $commands += "$php $wpCli theme delete --path=$wpFolderPath"
 # update core, plugins and themes languages 
 $commands += "$php $wpCli language core update --path=$wpFolderPath"
 $commands += "$php $wpCli language plugin install --all $wpLocale --path=$wpFolderPath"
-$commands += "$php $wpCli language plugin update --all --path=$wpFolderPath"
+# $commands += "$php $wpCli language plugin update --all --path=$wpFolderPath"
 $commands += "$php $wpCli language theme install --all $wpLocale --path=$wpFolderPath"
 $commands += "$php $wpCli language theme update --all --path=$wpFolderPath"
 
@@ -137,7 +138,7 @@ $commands += "del $wpFolderPath\readme.html"
 $commands += "start $wpUrl"
 
 # open the site backend in the default browser
-$commands += "start $wpUrl/admin"
+$commands += "start $wpUrl/wp-admin"
 
 ""
 Write-Host "($(Get-DebugTimestamp)) Starting Wordpress setup..." -ForegroundColor Green
@@ -158,6 +159,7 @@ foreach ($command in $commands) {
     ""
 }
 
+
 # save generated admin password to a file
 $passwordFileName = "_$(Get-RandomString -length 16).txt"
 $passwordFilePath = "$wpFolderPath\$passwordFileName"
@@ -173,3 +175,4 @@ Write-Host "****************************************" -ForegroundColor Magenta
 ""
 Write-Host "($(Get-DebugTimestamp)) Wordpress setup complete!" -ForegroundColor Green
 ""
+
